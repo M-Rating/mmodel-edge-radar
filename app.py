@@ -29,7 +29,7 @@ def implied_from_book(bookmakers, home_name, away_name):
 def get_market_odds_ncaab():
     if not ODDS_API_KEY:
         return {}
-    url = "https://api.the-odds-api.com/v4/sports/basketball_ncaab/odds"
+    url = "https://api.the-odds-api.com/v4/sports/americanfootball_nfl/odds"
     params = {"apiKey": ODDS_API_KEY, "regions": "us", "markets": "h2h", "oddsFormat": "american"}
     try:
         r = requests.get(url, params=params, timeout=20)
