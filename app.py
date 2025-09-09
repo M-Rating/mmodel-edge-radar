@@ -105,7 +105,50 @@ else:
     meta, teams_df, bracket_df, odds_df, results_df = {}, pd.DataFrame(), pd.DataFrame(), pd.DataFrame(), pd.DataFrame()
     st.warning("Live mode placeholder — add Odds API fetch here.")
 
-# Show teams table in Snapshot mode
+# -------------------
+# SNAPSHOT MODE UI
+# -------------------
 if mode == "Snapshot":
-    st.subheader("Teams")
-    st.dataframe(teams_df)
+    # What‑If Simulator FIRST
+    st.subheader("🔄 What‑If Simulator")
+    if not bracket_df.empty:
+        round_choices = sorted(bracket_df["round"].unique())
+        sel_round = st.selectbox("Round", round_choices)
+        subset = bracket_df[bracket_df["round"] == sel_round]
+
+        id_to_name = {r.team_id: r.team_name for _, r in teams_df.rename(columns=str).iterrows()}
+        def label(row):
+            t1 = id_to_name.get(row["team1_id"], row["team1_id"])
+            t2 = id_to_name.get(row["team2_id"], row["team2_id"])
+            return f'{row["matchup_id"]}: {t1} vs {t2}'
+
+        match = st.selectbox("Matchup", list(subset["matchup_id"]),
+                             format_func=lambda mid: label(subset[subset["matchup_id"]==mid].iloc[0]))
+        row = subset[subset["matchup_id"] == match].iloc[0]
+        t1, t2 = row["team1_id"], row["team2_id"]
+        winner = st.radio("Set winner", options=[t1, t2],
+                          format_func=lambda tid: id_to_name.get(tid, tid), horizontal=True)
+
+        if st.button("Apply What‑If"):
+            new_row = pd.DataFrame([{"matchup_id": match, "winner_id": winner, "round": int(row["round"])}])
+            if not st.session_state.whatif_results.empty and match in st.session_state.whatif_results["matchup_id"].values:
+                st.session_state.whatif_results.loc[
+                    st.session_state.whatif_results["matchup_id"] == match,
+                    ["winner_id", "round"]
+                ] = [winner, int(row["round"])]
+            else:
+                st.session_state.whatif_results = pd.concat(
+                    [st.session_state.whatif_results, new_row], ignore_index=True
+                )
+            st.success("What‑If applied.")
+
+    # Bracket Showdown SECOND
+    picks = snapshot_picks_to_brackets(bracket_df)
+    res = current_results(results_df)
+    leaderboard = score_brackets(picks, res)
+    st.subheader("🏆 Bracket Showdown")
+    st.dataframe(leaderboard, hide_index=True)
+
+    # Teams table LAST
+    with st.expander("📋 Teams list"):
+        st.dataframe(teams_df, use_container_width=True)
