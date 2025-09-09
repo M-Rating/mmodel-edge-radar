@@ -108,4 +108,4 @@ else:
 # Show teams table in Snapshot mode
 if mode == "Snapshot":
     st.subheader("Teams")
-    st.dataframe
+    st.dataframe(teams_df)
