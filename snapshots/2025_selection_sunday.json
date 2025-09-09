@@ -1,0 +1,57 @@
+{
+  "meta": {
+    "season": 2025,
+    "snapshot_date": "2025-03-16",
+    "description": "Selection Sunday snapshot after conference tournaments",
+    "source": "M-Rating model v0"
+  },
+  "teams": [
+    {"team_id": "A", "team_name": "Alpha", "seed": 1, "region": "South", "rating": 90.1},
+    {"team_id": "B", "team_name": "Bravo", "seed": 4, "region": "South", "rating": 84.3},
+    {"team_id": "C", "team_name": "Charlie", "seed": 2, "region": "South", "rating": 88.0},
+    {"team_id": "D", "team_name": "Delta", "seed": 3, "region": "South", "rating": 85.0}
+  ],
+  "bracket": [
+    {
+      "round": 1,
+      "matchup_id": "S1-1",
+      "region": "South",
+      "team1_id": "A",
+      "team2_id": "B",
+      "predicted_winner": "A",
+      "m_rating_win_prob": 0.66,
+      "kenpom_winner": "A",
+      "torvik_winner": "A",
+      "espn_consensus_winner": "A",
+      "cbs_consensus_winner": "A"
+    },
+    {
+      "round": 1,
+      "matchup_id": "S1-2",
+      "region": "South",
+      "team1_id": "C",
+      "team2_id": "D",
+      "predicted_winner": "C",
+      "m_rating_win_prob": 0.57,
+      "kenpom_winner": "C",
+      "torvik_winner": "C",
+      "espn_consensus_winner": "C",
+      "cbs_consensus_winner": "C"
+    },
+    {
+      "round": 2,
+      "matchup_id": "S2-1",
+      "region": "South",
+      "team1_id": "WIN(S1-1)",
+      "team2_id": "WIN(S1-2)",
+      "predicted_winner": "A",
+      "m_rating_win_prob": 0.55,
+      "kenpom_winner": "A",
+      "torvik_winner": "A",
+      "espn_consensus_winner": "A",
+      "cbs_consensus_winner": "A"
+    }
+  ],
+  "odds": [],
+  "results": []
+}
